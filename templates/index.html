@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Love Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>💖 Love Calculator 💖</h1>
+
+    <form method="POST">
+        <input type="text" name="boy" placeholder="Boy Name" required>
+        <input type="text" name="girl" placeholder="Girl Name" required>
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if score is not none %}
+        <h2>Love Score = {{ score }}% ❤️</h2>
+    {% endif %}
+</div>
+
+</body>
+</html>

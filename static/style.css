@@ -1,0 +1,26 @@
+body{
+    font-family: Arial;
+    background: pink;
+    text-align:center;
+    padding-top:100px;
+}
+
+.container{
+    background:white;
+    display:inline-block;
+    padding:30px;
+    border-radius:15px;
+}
+
+input{
+    display:block;
+    margin:10px auto;
+    padding:10px;
+}
+
+button{
+    padding:10px 20px;
+    background:red;
+    color:white;
+    border:none;
+}
