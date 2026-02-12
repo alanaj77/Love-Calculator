@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -9,16 +11,36 @@
 <div class="container">
     <h1>💖 Love Calculator 💖</h1>
 
-    <form method="POST">
-        <input type="text" name="boy" placeholder="Boy Name" required>
-        <input type="text" name="girl" placeholder="Girl Name" required>
+    <form id="loveForm">
+        <input type="text" id="boy" name="boy" placeholder="Boy Name" required>
+        <input type="text" id="girl" name="girl" placeholder="Girl Name" required>
         <button type="submit">Calculate</button>
     </form>
 
-    {% if score is not none %}
-        <h2>Love Score = {{ score }}% ❤️</h2>
-    {% endif %}
+    <div id="result-container" style="display: none;">
+        <h2 id="score-text"></h2>
+    </div>
 </div>
+
+<script>
+    document.getElementById('loveForm').onsubmit = async (e) => {
+        e.preventDefault(); // Stop page refresh
+        
+        const formData = new FormData(e.target);
+        const response = await fetch('/', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        const resultDiv = document.getElementById('result-container');
+        const scoreText = document.getElementById('score-text');
+        
+        scoreText.innerText = `Love Score = ${data.score}% ❤️`;
+        resultDiv.style.display = 'block';
+    };
+</script>
 
 </body>
 </html>

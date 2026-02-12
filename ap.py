@@ -1,45 +1,27 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
 def calculate_love_score(name1, name2):
-    name = name1.lower() + name2.lower()
+    combined = (name1 + name2).lower()
+    
+    t_score = sum(combined.count(char) for char in "true")
+    l_score = sum(combined.count(char) for char in "love")
+    
+    # Simple logic to cap score at 100 or keep it as 2 digits
+    score_str = f"{t_score}{l_score}"
+    return int(score_str) if int(score_str) <= 100 else 99
 
-    t = [0,0,0,0]
-    l = [0,0,0,0]
-
-    true = "true"
-    love = "love"
-
-    for match in true:
-        count = 0
-        for letter in name:
-            if letter == match:
-                count += 1
-        t[true.index(match)] = count
-
-    for match in love:
-        count = 0
-        for letter in name:
-            if letter == match:
-                count += 1
-        l[love.index(match)] = count
-
-    score = int(str(sum(t)) + str(sum(l)))
-    return score
-
-
-@app.route("/", methods=["GET","POST"])
+@app.route("/", methods=["GET", "POST"])
 def home():
-    score = None
     if request.method == "POST":
-        name1 = request.form["boy"]
-        name2 = request.form["girl"]
+        name1 = request.form.get("boy", "")
+        name2 = request.form.get("girl", "")
         score = calculate_love_score(name1, name2)
-
-    return render_template("index.html", score=score)
-
+        # Return JSON instead of HTML
+        return jsonify(score=score)
+        
+    return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run()
-
+    app.run(debug=True)
